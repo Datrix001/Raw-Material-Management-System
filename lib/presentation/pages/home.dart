@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:rmms/presentation/components/dialog_box.dart';
 import 'package:rmms/presentation/pages/composition.dart';
 import 'package:rmms/presentation/pages/material.dart';
 import 'package:rmms/presentation/utils/fonts.dart';
@@ -20,15 +21,21 @@ class _HomePageState extends State<HomePage> {
   }
 
   final List<Widget> pages = [Composition(), MaterialLayer()];
+  final List<String> titles = ["Raw Composition Layer","Manufacturing Log"];
   @override
   Widget build(BuildContext context) {
-
+ 
     return Scaffold(
       appBar: AppBar(
-        title: Text("Raw Composition Layer", style: CustomFonts.title),
+        title: Text(titles[currentIndex], style: CustomFonts.title),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        
+        onPressed: () {
+          showDialog(context: context,builder:(context){
+            return DialogBox(); 
+          });
+        },
         child: Icon(Icons.add),
       ),
       bottomNavigationBar: BottomNavigationBar(

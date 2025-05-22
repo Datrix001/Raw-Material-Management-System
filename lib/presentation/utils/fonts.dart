@@ -15,6 +15,10 @@ class CustomFonts {
   static TextStyle body1= GoogleFonts.ubuntu(
     fontWeight: FontWeight.w300,
     color:Colors.white
+  );
 
+  static TextStyle bodyBlack= GoogleFonts.ubuntu(
+    fontWeight: FontWeight.w600,
+    // color:Colors.white
   );
 }
