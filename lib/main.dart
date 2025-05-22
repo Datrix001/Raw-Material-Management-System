@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:rmms/presentation/pages/composition.dart';
+import 'package:rmms/presentation/pages/material.dart';
+import 'package:rmms/presentation/utils/theme.dart';
 
 void main() {
   runApp(const MainApp());
@@ -9,12 +12,15 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: Scaffold(
-        body: Center(
-          child: Text('Hello World!'),
-        ),
-      ),
+    return  MaterialApp(
+      themeMode: ThemeMode.system,
+      darkTheme: MyTheme.darkTheme,
+      theme: MyTheme.lightTheme,
+      initialRoute: "/",
+      routes: {
+        "/" : (context) => Composition(),
+        "/material" : (context) => MaterialLayer()
+      },
     );
   }
 }
