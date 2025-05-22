@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:rmms/presentation/pages/composition.dart';
+import 'package:rmms/presentation/pages/home.dart';
 import 'package:rmms/presentation/pages/material.dart';
 import 'package:rmms/presentation/utils/theme.dart';
 
@@ -16,9 +17,11 @@ class MainApp extends StatelessWidget {
       themeMode: ThemeMode.system,
       darkTheme: MyTheme.darkTheme,
       theme: MyTheme.lightTheme,
+      debugShowCheckedModeBanner: false,
       initialRoute: "/",
       routes: {
-        "/" : (context) => Composition(),
+        "/" : (context) => HomePage(),
+        "/composition":(context)=>Composition(),
         "/material" : (context) => MaterialLayer()
       },
     );
