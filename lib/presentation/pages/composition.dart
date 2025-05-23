@@ -13,7 +13,11 @@ class Composition extends StatelessWidget {
     bool isDark = Theme.of(context).brightness == Brightness.dark;
     return BlocBuilder<CompCubit, List<HiveModel>>(
       builder: (context, state) {
-        return ListView.builder(
+        return state.isEmpty ?
+          Center(
+            child: Text("No Data Availabe",style: CustomFonts.title,),
+          ):
+          ListView.builder(
           itemCount: state.length,
           itemBuilder: (context, index) {
             final item = state[index];
@@ -37,7 +41,9 @@ class Composition extends StatelessWidget {
                     SlidableAction(
                       borderRadius: BorderRadius.circular(10),
                       backgroundColor: Colors.red,
-                      onPressed: (context) {},
+                      onPressed: (_) {
+                        (context).read<CompCubit>().deleteComposition(item.id);
+                      },
                       icon: Icons.delete,
                     ),
                   ],

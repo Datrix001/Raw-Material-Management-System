@@ -29,4 +29,9 @@ class CompCubit extends Cubit<List<HiveModel>> {
     final compositions = HiveData().getAllCompositions();
     emit(compositions);
   }
+
+  Future<void> deleteComposition(String id)async{
+    await HiveData().deleteComposition(id);
+    loadCompositions();
+  }
 }
