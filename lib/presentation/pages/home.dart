@@ -24,7 +24,6 @@ class _HomePageState extends State<HomePage> {
   final List<String> titles = ["Raw Composition Layer","Manufacturing Log"];
   @override
   Widget build(BuildContext context) {
- 
     return Scaffold(
       appBar: AppBar(
         title: Text(titles[currentIndex], style: CustomFonts.title),
@@ -32,11 +31,16 @@ class _HomePageState extends State<HomePage> {
       floatingActionButton: FloatingActionButton(
         
         onPressed: () {
+          if(currentIndex==0){
           showDialog(context: context,builder:(context){
             return DialogBox(); 
-          });
+          });}else{
+
+          }
         },
-        child: Icon(Icons.add),
+        child: currentIndex==0 ?
+        Icon(Icons.add):Icon(Icons.check)
+
       ),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: currentIndex,
