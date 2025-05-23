@@ -1,6 +1,8 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
-import 'package:rmms/data/models/composition_model.dart';
-// import 'package:rmms/data/google_sheets_api.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:rmms/presentation/bloc/comp_cubit.dart';
 import 'package:rmms/presentation/components/custom_button.dart';
 import 'package:rmms/presentation/components/dropdown.dart';
 import 'package:rmms/presentation/utils/fonts.dart';
@@ -12,14 +14,19 @@ class DialogBox extends StatefulWidget {
   State<DialogBox> createState() => _DialogBoxState();
 }
 
-int iron = 1;
-int copper = 1;
-int steel = 1;
-int plastic = 1;
-
 class _DialogBoxState extends State<DialogBox> {
   final TextEditingController nameController = TextEditingController();
   var dropDownValue = 1;
+  int iron = 1;
+  int copper = 1;
+  int steel = 1;
+  int plastic = 1;
+  
+  @override
+  void dispose() {
+    nameController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -68,14 +75,17 @@ class _DialogBoxState extends State<DialogBox> {
       actions: [
         CustomButton(
           function: () async {
-            final product = {
-              CompositionModel.productName: nameController.text,
-              CompositionModel.material1: iron.toString(),
-              CompositionModel.material2: copper.toString(),
-              CompositionModel.material3: steel.toString(),
-              CompositionModel.material4: plastic.toString(),
+            final random = Random().nextInt(10000);
+
+            Map<String, dynamic> productDetail = {
+              "id": random.toString(),
+              "productName": nameController.text,
+              "material1": iron,
+              "material2": copper,
+              "material3": steel,
+              "material4": plastic,
             };
-            // await GoogleSheetsApi.insert([product]);
+            context.read<CompCubit>().addComposition(productDetail);
             Navigator.pop(context);
           },
           name: "Save",

@@ -1,21 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:hive/hive.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hive_flutter/adapters.dart';
 import 'package:rmms/data/datasources/hive_data.dart';
-// import 'package:rmms/data/google_sheets_api.dart';
-import 'package:rmms/data/models/hive_model.dart';
+import 'package:rmms/presentation/bloc/comp_cubit.dart';
 import 'package:rmms/presentation/pages/composition.dart';
 import 'package:rmms/presentation/pages/home.dart';
 import 'package:rmms/presentation/pages/material.dart';
 import 'package:rmms/presentation/utils/theme.dart';
 
-void main() async{
-  //initialise spreadsheet
+void main() async {
+
   WidgetsFlutterBinding.ensureInitialized();
-  // await GoogleSheetsApi.init();
+
+  await Hive.initFlutter();
   await HiveData.init();
-  Hive.registerAdapter(HiveModelAdapter());
-  await Hive.openBox<HiveModel>("composition");
-  runApp(const MainApp());
+  runApp(MainApp());
 }
 
 class MainApp extends StatelessWidget {
@@ -23,17 +22,20 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      themeMode: ThemeMode.system,
-      darkTheme: MyTheme.darkTheme,
-      theme: MyTheme.lightTheme,
-      debugShowCheckedModeBanner: false,
-      initialRoute: "/",
-      routes: {
-        "/": (context) => HomePage(),
-        "/composition": (context) => Composition(),
-        "/material": (context) => MaterialLayer(),
-      },
+    return BlocProvider(
+      create: (context) => CompCubit(),
+      child: MaterialApp(
+        themeMode: ThemeMode.system,
+        darkTheme: MyTheme.darkTheme,
+        theme: MyTheme.lightTheme,
+        debugShowCheckedModeBanner: false,
+        initialRoute: "/",
+        routes: {
+          "/": (context) => HomePage(),
+          "/composition": (context) => Composition(),
+          "/material": (context) => MaterialLayer(),
+        },
+      ),
     );
   }
 }

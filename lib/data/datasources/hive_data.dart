@@ -32,7 +32,7 @@ class HiveData {
       ..material2 = material2
       ..material3 = material3
       ..material4 = material4
-      ..id = genrateUniqueId()
+      ..id = id
       ..isSynced = false;
 //test1
     await _box?.add(data);
