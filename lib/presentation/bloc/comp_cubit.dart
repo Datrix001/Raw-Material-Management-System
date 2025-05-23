@@ -24,4 +24,9 @@ class CompCubit extends Cubit<List<HiveModel>> {
 
     loadCompositions();
   }
+
+  Future<void> getCompositions()async{
+    final compositions = HiveData().getAllCompositions();
+    emit(compositions);
+  }
 }
