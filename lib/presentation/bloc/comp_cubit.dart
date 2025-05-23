@@ -3,16 +3,16 @@ import 'package:rmms/data/datasources/hive_data.dart';
 import 'package:rmms/data/models/hive_model.dart';
 
 class CompCubit extends Cubit<List<HiveModel>> {
-  CompCubit() : super([]){
+  CompCubit() : super([]) {
     loadCompositions();
   }
 
-  void loadCompositions(){
+  void loadCompositions() {
     final compositions = HiveData().getAllCompositions();
-    emit(compositions); 
+    emit(compositions);
   }
 
-  Future<void> addComposition(Map<String, dynamic> productDetail)async {
+  Future<void> addComposition(Map<String, dynamic> productDetail) async {
     await HiveData().addComposition(
       productDetail['id'],
       productDetail['productName'],
@@ -25,13 +25,26 @@ class CompCubit extends Cubit<List<HiveModel>> {
     loadCompositions();
   }
 
-  Future<void> getCompositions()async{
+  Future<void> getCompositions() async {
     final compositions = HiveData().getAllCompositions();
     emit(compositions);
   }
 
-  Future<void> deleteComposition(String id)async{
+  Future<void> deleteComposition(String id) async {
     await HiveData().deleteComposition(id);
     loadCompositions();
+  }
+
+  Future<void> editComposition(Map<String, dynamic> productDetail) async {
+    await HiveData().updateComposition(
+      productDetail['id'],
+      productName: productDetail['productName'],
+      material1: productDetail['material1'],
+      material2: productDetail['material2'],
+      material3: productDetail['material3'],
+      material4: productDetail['material4'],
+    );
+    loadCompositions();
+
   }
 }

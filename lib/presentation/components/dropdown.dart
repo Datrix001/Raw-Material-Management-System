@@ -3,12 +3,13 @@ import 'package:rmms/presentation/utils/fonts.dart';
 
 class CustomDropdown extends StatefulWidget {
   final String label;
+  final int? initialValue;
   final Function(int) onchanged;
 
   const CustomDropdown({
     super.key,
     required this.label,
-    required this.onchanged,
+    required this.onchanged, this.initialValue,
   });
 
   @override
@@ -25,7 +26,7 @@ class _CustomDropdownState extends State<CustomDropdown> {
         label: Text(widget.label, style: CustomFonts.bodyBlack),
         border: OutlineInputBorder(),
       ),
-      value: dropDownValue,
+      value: widget.initialValue ??dropDownValue,
       isExpanded: true,
       items: [
         for (int i = 1; i <= 10; i++)
