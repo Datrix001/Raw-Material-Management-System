@@ -5,8 +5,8 @@ class CustomIcon extends StatelessWidget {
   final VoidCallback onPressed;
   final Icon icon;
   final Color backgroundColor;
-  final Color color;
-  const CustomIcon({super.key, required this.onPressed, required this.icon, required this.color, required this.backgroundColor});
+  // final Color color;
+  const CustomIcon({super.key, required this.onPressed, required this.icon, required this.backgroundColor});
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +16,7 @@ class CustomIcon extends StatelessWidget {
         color: backgroundColor
       ),
       child: IconButton(
-        color: color,
+        // color: color,
         onPressed: onPressed, icon: icon),
     );
   }

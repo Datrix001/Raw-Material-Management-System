@@ -3,7 +3,13 @@ import 'package:rmms/presentation/utils/fonts.dart';
 
 class CustomDropdown extends StatefulWidget {
   final String label;
-  const CustomDropdown({super.key, required this.label});
+  final Function(int) onchanged;
+
+  const CustomDropdown({
+    super.key,
+    required this.label,
+    required this.onchanged,
+  });
 
   @override
   State<CustomDropdown> createState() => _CustomDropdownState();
@@ -11,6 +17,7 @@ class CustomDropdown extends StatefulWidget {
 
 class _CustomDropdownState extends State<CustomDropdown> {
   int? dropDownValue = 1;
+
   @override
   Widget build(BuildContext context) {
     return DropdownButtonFormField(
@@ -18,17 +25,17 @@ class _CustomDropdownState extends State<CustomDropdown> {
         label: Text(widget.label, style: CustomFonts.bodyBlack),
         border: OutlineInputBorder(),
       ),
-      // value: dropDownValue,
+      value: dropDownValue,
       isExpanded: true,
-      // hint: Text("Material 1"),
       items: [
         for (int i = 1; i <= 10; i++)
           DropdownMenuItem(value: i, child: Text(i.toString())),
       ],
-      onChanged: (value) => {
+      onChanged: (value) {
         setState(() {
           dropDownValue = value!;
-        }),
+        });
+        widget.onchanged(value!); // Note : It will tell the parent 
       },
     );
   }

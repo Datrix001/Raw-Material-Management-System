@@ -7,6 +7,7 @@ class MaterialLayer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    
     return ListView.builder(
       itemCount: 6,
       itemBuilder: (context, index) {
@@ -29,14 +30,14 @@ class MaterialLayer extends StatelessWidget {
                   CustomIcon(
                     onPressed: () {},
                     icon: Icon(Icons.add),
-                    color: Colors.white,
+                    // color: Colors.white,
                     backgroundColor: Colors.green,
                   ),
                   Text("1", style: CustomFonts.body1Black),
                   CustomIcon(
                     onPressed: () {},
                     icon: Icon(Icons.remove),
-                    color: Colors.white,
+                    // color: Colors.white,
                     backgroundColor: Colors.green,
                   ),
                 ],

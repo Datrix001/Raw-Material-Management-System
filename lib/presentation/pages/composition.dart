@@ -7,9 +7,9 @@ class Composition extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    bool isDark = Theme.of(context).brightness == Brightness.dark;
     return ListView.builder(
       itemCount: 6,
-      // padding: EdgeInsets.only(top: 20, left: 20, right: 20),
       itemBuilder: (context, index) {
         return Padding(
           padding: const EdgeInsets.only(top: 20,left: 20,right: 20),
