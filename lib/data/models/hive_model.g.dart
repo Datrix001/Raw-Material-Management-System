@@ -22,14 +22,15 @@ class HiveModelAdapter extends TypeAdapter<HiveModel> {
       ..material2 = fields[2] as int
       ..material3 = fields[3] as int
       ..material4 = fields[4] as int
-      ..isSynced = fields[5] as bool
-      ..id = fields[6] as String;
+      ..isSynced = fields[5] as bool?
+      ..id = fields[6] as String
+      ..isUpdate = fields[7] as bool?;
   }
 
   @override
   void write(BinaryWriter writer, HiveModel obj) {
     writer
-      ..writeByte(7)
+      ..writeByte(8)
       ..writeByte(0)
       ..write(obj.productName)
       ..writeByte(1)
@@ -43,7 +44,9 @@ class HiveModelAdapter extends TypeAdapter<HiveModel> {
       ..writeByte(5)
       ..write(obj.isSynced)
       ..writeByte(6)
-      ..write(obj.id);
+      ..write(obj.id)
+      ..writeByte(7)
+      ..write(obj.isUpdate);
   }
 
   @override

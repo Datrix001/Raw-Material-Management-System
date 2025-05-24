@@ -17,6 +17,8 @@ class _MaterialLayerState extends State<MaterialLayer> {
   bool isSyncing = false;
   String syncStatus = "";
 
+  bool isUpdate = true;
+
   Future<void> syncData() async {
     setState(() {
       isSyncing = true;
@@ -33,6 +35,28 @@ class _MaterialLayerState extends State<MaterialLayer> {
       setState(() {
         isSyncing = false;
         syncStatus = "❌ Sync failed: $e";
+      });
+    }
+  }
+
+  Future<void> updateData() async {
+    setState(() {
+      isUpdate = true;
+      syncStatus = "Updating...";
+    });
+
+    try {
+      await Gsheet().UpdateGoogleSheet();
+      setState(() {
+        syncStatus = "✅ Updated successfully!";
+      });
+    } catch (e) {
+      setState(() {
+        syncStatus = "❌ Update failed: $e";
+      });
+    } finally {
+      setState(() {
+        isUpdate = false;
       });
     }
   }
@@ -66,7 +90,12 @@ class _MaterialLayerState extends State<MaterialLayer> {
                   SizedBox(height: 10,),
                   isSyncing
                       ? const CircularProgressIndicator()
-                      : CustomButton(function: syncData, name: "Refresh", color: Colors.lightBlue),
+                      : Column(
+                        children: [
+                          CustomButton(function: syncData, name: "Refresh", color: Colors.lightBlue),
+                          CustomButton(function: updateData, name: "Update", color: Colors.orange),
+                        ],
+                      ),
                   const SizedBox(height: 5),
                   Text(syncStatus, style: CustomFonts.body1Black),
                 ],

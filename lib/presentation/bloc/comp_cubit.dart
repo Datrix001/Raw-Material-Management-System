@@ -20,8 +20,9 @@ class CompCubit extends Cubit<List<HiveModel>> {
       productDetail['material2'],
       productDetail['material3'],
       productDetail['material4'],
+      false
     );
-
+    Gsheet().syncToGoogleSheets();
     loadCompositions();
   }
 
@@ -43,6 +44,7 @@ class CompCubit extends Cubit<List<HiveModel>> {
       material2: productDetail['material2'],
       material3: productDetail['material3'],
       material4: productDetail['material4'],
+      isUpdate: true
     );
     loadCompositions();
 

@@ -13,7 +13,7 @@ class SyncService {
         final isConnected = await _checkInternetConnection();
         if (isConnected) {
           print('Synching Starting!!!!');
-          await Gsheet().syncToGoogleSheets();
+          await Gsheet().syncAll();
           // await Gsheet().fetchInventoryData();
         } else {
           print('No internet connection!!!!!!!');

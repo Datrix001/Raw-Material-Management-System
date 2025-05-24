@@ -21,11 +21,13 @@ class HiveModel extends HiveObject{
   late int material4;
 
   @HiveField(5)
-  late bool isSynced = false;
+  bool? isSynced = false;
 
   @HiveField(6)
   late String id;
   
+  @HiveField(7)
+  bool? isUpdate = false;
 }
 
 @HiveType(typeId: 1)

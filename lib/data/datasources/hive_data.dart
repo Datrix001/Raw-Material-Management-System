@@ -28,6 +28,7 @@ class HiveData {
     int material2,
     int material3,
     int material4,
+    bool isUpdate,
   ) async {
     final data = HiveModel()
       ..productName = productName
@@ -36,9 +37,11 @@ class HiveData {
       ..material3 = material3
       ..material4 = material4
       ..id = id
-      ..isSynced = false;
+      ..isSynced = false
+      ..isUpdate = false;
     //test1
     await _box?.add(data);
+    await _box?.flush();
   }
 
   // Getting all the data from hive
@@ -55,6 +58,7 @@ class HiveData {
   required int material2,
   required int material3,
   required int material4,
+  required bool isUpdate
 }) async {
   if (_box == null) return;
 
@@ -69,7 +73,8 @@ class HiveData {
         ..material2 = material2
         ..material3 = material3
         ..material4 = material4
-        ..isSynced = false;
+        ..isSynced = false
+        ..isUpdate = true;
 
       await _box!.put(key, updated);
       print("✅ Updated Hive item with id: $id");
