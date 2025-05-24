@@ -2,6 +2,7 @@ import 'package:hive/hive.dart';
 
 part 'hive_model.g.dart';
 
+
 @HiveType(typeId: 0)
 class HiveModel extends HiveObject{
   @HiveField(0)
@@ -24,8 +25,23 @@ class HiveModel extends HiveObject{
 
   @HiveField(6)
   late String id;
-
-
-
   
+}
+
+@HiveType(typeId: 1)
+class InventoryModel extends HiveObject {
+  @HiveField(0)
+  late String material;
+
+  @HiveField(1)
+  late int quantity;
+@HiveField(2)
+  late int threshold;
+
+  InventoryModel({
+    required this.material,
+    required this.quantity,
+    required this.threshold,
+  });
+
 }

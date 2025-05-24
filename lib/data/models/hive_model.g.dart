@@ -56,3 +56,43 @@ class HiveModelAdapter extends TypeAdapter<HiveModel> {
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }
+
+class InventoryModelAdapter extends TypeAdapter<InventoryModel> {
+  @override
+  final int typeId = 1;
+
+  @override
+  InventoryModel read(BinaryReader reader) {
+    final numOfFields = reader.readByte();
+    final fields = <int, dynamic>{
+      for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
+    };
+    return InventoryModel(
+      material: fields[0] as String,
+      quantity: fields[1] as int,
+      threshold: fields[2] as int,
+    );
+  }
+
+  @override
+  void write(BinaryWriter writer, InventoryModel obj) {
+    writer
+      ..writeByte(3)
+      ..writeByte(0)
+      ..write(obj.material)
+      ..writeByte(1)
+      ..write(obj.quantity)
+      ..writeByte(2)
+      ..write(obj.threshold);
+  }
+
+  @override
+  int get hashCode => typeId.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is InventoryModelAdapter &&
+          runtimeType == other.runtimeType &&
+          typeId == other.typeId;
+}

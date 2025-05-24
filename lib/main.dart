@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:rmms/data/datasources/hive_data.dart';
+import 'package:rmms/domain/business%20logic/timer.dart';
 import 'package:rmms/presentation/bloc/comp_cubit.dart';
 import 'package:rmms/presentation/pages/composition.dart';
 import 'package:rmms/presentation/pages/home.dart';
@@ -14,6 +15,7 @@ void main() async {
 
   await Hive.initFlutter();
   await HiveData.init();
+  SyncService.startSyncing(interval: Duration(minutes: 1));
   runApp(MainApp());
 }
 

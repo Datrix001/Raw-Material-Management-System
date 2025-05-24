@@ -9,6 +9,9 @@ class HiveData {
 
   static Future<void> init() async {
     Hive.registerAdapter(HiveModelAdapter());
+    Hive.registerAdapter(InventoryModelAdapter());
+    
+    await Hive.openBox<InventoryModel>('inventory');
     _box = await Hive.openBox<HiveModel>('composition');
   }
 
