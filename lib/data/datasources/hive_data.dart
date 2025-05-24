@@ -6,6 +6,7 @@ import 'package:rmms/data/models/hive_model.dart';
 
 class HiveData {
   static Box<HiveModel>? _box;
+  static Box<String>? _box1;
 
   static Future<void> init() async {
     Hive.registerAdapter(HiveModelAdapter());
@@ -13,6 +14,9 @@ class HiveData {
     
     await Hive.openBox<InventoryModel>('inventory');
     _box = await Hive.openBox<HiveModel>('composition');
+    _box1 = await Hive.openBox<String>('deleted_composition_ids');
+
+
   }
 
   String genrateUniqueId() {
