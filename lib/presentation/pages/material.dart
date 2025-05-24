@@ -1,17 +1,42 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:rmms/data/models/hive_model.dart';
-import 'package:rmms/presentation/bloc/comp_cubit.dart';
-import 'package:rmms/presentation/components/Custom_icon.dart';
+import 'package:rmms/data/datasources/gsheet.dart';
 import 'package:rmms/presentation/components/custom_button.dart';
 import 'package:rmms/presentation/components/dropdown.dart';
 import 'package:rmms/presentation/components/product_dropdown.dart';
 import 'package:rmms/presentation/utils/fonts.dart';
 
-class MaterialLayer extends StatelessWidget {
+class MaterialLayer extends StatefulWidget {
   const MaterialLayer({super.key});
 
-  
+  @override
+  State<MaterialLayer> createState() => _MaterialLayerState();
+}
+
+class _MaterialLayerState extends State<MaterialLayer> {
+
+  bool isSyncing = false;
+  String syncStatus = "";
+
+  Future<void> syncData() async {
+    setState(() {
+      isSyncing = true;
+      syncStatus = "Syncing...";
+    });
+
+    try {
+      await Gsheet().syncToGoogleSheets();
+      setState(() {
+        isSyncing = false;
+        syncStatus = "✅ Synced successfully!";
+      });
+    } catch (e) {
+      setState(() {
+        isSyncing = false;
+        syncStatus = "❌ Sync failed: $e";
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
   // final TextEditingController productName = TextEditingController();
@@ -24,7 +49,7 @@ class MaterialLayer extends StatelessWidget {
       child: Column(
         children: [
           Container(
-            height: 240,
+            height: 400,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(20),
               color: Colors.white
@@ -37,7 +62,13 @@ class MaterialLayer extends StatelessWidget {
                   SizedBox(height: 20,),
                   CustomDropdown(label: "Select Amount", onchanged: (_){}),
                   SizedBox(height: 10,),
-                  CustomButton(function: (){}, name: "Save", color: Colors.green)
+                  CustomButton(function: (){}, name: "Save", color: Colors.green),
+                  SizedBox(height: 10,),
+                  isSyncing
+                      ? const CircularProgressIndicator()
+                      : CustomButton(function: syncData, name: "Refresh", color: Colors.lightBlue),
+                  const SizedBox(height: 5),
+                  Text(syncStatus, style: CustomFonts.body1Black),
                 ],
               ),
             ),

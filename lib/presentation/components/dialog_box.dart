@@ -116,7 +116,7 @@ class _DialogBoxState extends State<DialogBox> {
                 : Random().nextInt(10000).toString();
 
             Map<String, dynamic> productDetail = {
-              "id": id.toString(),
+              "id": widget.id ?? id.toString(),
               "productName": nameController.text,
               "material1": iron,
               "material2": copper,

@@ -34,7 +34,7 @@ class HiveData {
       ..material4 = material4
       ..id = id
       ..isSynced = false;
-//test1
+    //test1
     await _box?.add(data);
   }
 
@@ -46,29 +46,37 @@ class HiveData {
 
   // Updating data
   Future<void> updateComposition(
-    String id, {
-    required String productName,
-    required int material1,
-    required int material2,
-    required int material3,
-    required int material4,
-  }) async {
-    if (_box == null) return;
+  String id, {
+  required String productName,
+  required int material1,
+  required int material2,
+  required int material3,
+  required int material4,
+}) async {
+  if (_box == null) return;
 
-    final index = _box!.values.toList().indexWhere((item) => item.id == id);
-    if (index == -1) return;
+  final keys = _box!.keys.toList();
+  for (final key in keys) {
+    final item = _box!.get(key);
+    if (item?.id == id) {
+      final updated = HiveModel()
+        ..id = id
+        ..productName = productName
+        ..material1 = material1
+        ..material2 = material2
+        ..material3 = material3
+        ..material4 = material4
+        ..isSynced = false;
 
-    final key = _box!.keyAt(index);
-    final updated = HiveModel()
-      ..productName = productName
-      ..material1 = material1
-      ..material2 = material2
-      ..material3 = material3
-      ..material4 = material4
-      ..id = id;
-
-    await _box!.put(key, updated);
+      await _box!.put(key, updated);
+      print("✅ Updated Hive item with id: $id");
+      return;
+    }
   }
+
+  print("❌ Item not found with id: $id");
+}
+
 
   // Deleting Data
   Future<void> deleteComposition(String id) async {
@@ -79,6 +87,8 @@ class HiveData {
 
     final key = _box!.keyAt(index);
     await _box!.delete(key);
-  }
 
+    final deletedBox = await Hive.openBox<String>('deleted_composition_ids');
+  await deletedBox.add(id); // Save ID for syncing deletion
+  }
 }
