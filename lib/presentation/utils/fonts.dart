@@ -10,6 +10,13 @@ class CustomFonts {
 
   );
 
+  static TextStyle title1 = GoogleFonts.ubuntu(
+    fontSize: 26,
+    fontWeight: FontWeight.w600,
+    color: Colors.white
+  );
+
+
   static TextStyle body = GoogleFonts.ubuntu(
     fontWeight: FontWeight.w500,
     color:Colors.white

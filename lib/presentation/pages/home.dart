@@ -21,27 +21,28 @@ class _HomePageState extends State<HomePage> {
   }
 
   final List<Widget> pages = [Composition(), MaterialLayer()];
-  final List<String> titles = ["Raw Composition Layer","Manufacturing Log"];
+  final List<String> titles = ["Raw Composition Layer", "Manufacturing"];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(titles[currentIndex], style: CustomFonts.title),
       ),
-      floatingActionButton: FloatingActionButton(
-        
-        onPressed: () {
-          if(currentIndex==0){
-          showDialog(context: context,builder:(context){
-            return DialogBox(); 
-          });}else{
-
-          }
-        },
-        child: currentIndex==0 ?
-        Icon(Icons.add):Icon(Icons.check)
-
-      ),
+      floatingActionButton: currentIndex != 0
+          ? null
+          : FloatingActionButton(
+              onPressed: () {
+                if (currentIndex == 0) {
+                  showDialog(
+                    context: context,
+                    builder: (context) {
+                      return DialogBox();
+                    },
+                  );
+                } else {}
+              },
+              child: currentIndex == 0 ? Icon(Icons.add) : Icon(Icons.check),
+            ),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: currentIndex,
         onTap: indexChange,
