@@ -80,6 +80,30 @@ class Gsheet {
     }
   }
 
+  Future<void> inventoryUpdate() async {
+    final box = Hive.box<InventoryModel>('inventory');
+
+    for (int i = 0; i < box.length; i++) {
+      final key = box.keyAt(i);
+      final item = box.get(key);
+
+      if (item != null) {
+        final response = await http.post(
+          Uri.parse(
+            "https://script.googleusercontent.com/macros/echo?user_content_key=AehSKLj3XusMsfa80-XxOgsabPNtqBwrlDGESm1xc1FxLnvfqJM5yq03YtoJubpwLjSmRHUnLM6zVeqMJUYb54xwVaxX8tgNB4eXOfUrg1tgW3Y5NKt7s2OlgPsZPyOWKc48w3yTtVfA0Pco8Joa8C1oD6_fZO3GVYKcAs9FjVROe_6uItB9_sZE_Iw7zysRhnajLXMjdd_RWKtM9o04IMsej2Nu88YMQrKJxJop9E8uhMKpMnNGmv-eyTMHs26rsDRwCJHqfEnrLBlkrFZV9HmfQXlFHUsQYGDtkQSUlgsHjbFAUotfBM72Tcjd2awFBg&lib=M9fFx6F6zr4n2CkLKlKt7Z4JaLnrymLVK",
+          ),
+
+          body: {
+            'type': 'update_sheet',
+            'material': item.material,
+            'quantity': item.quantity.toString(),
+            'threshold':item.threshold?.toString() ??'20'
+          },
+        );
+      }
+    }
+  }
+
   Future<void> fetchInventoryFromGoogleSheets() async {
     try {
       final response = await http.get(
@@ -120,6 +144,7 @@ class Gsheet {
 
     // await syncToGoogleSheets();
     await UpdateGoogleSheet();
+    await inventoryUpdate();
     await fetchInventoryFromGoogleSheets();
     // InventoryCubit().refresh();
     cubit.refresh();

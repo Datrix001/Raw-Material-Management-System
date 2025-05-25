@@ -2,7 +2,6 @@ import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:rmms/data/models/hive_model.dart';
-// import 'package:rmms/data/models/inventory_result.dart'; // <-- Import this
 
 class InventoryResult {
   final bool success;
@@ -36,17 +35,26 @@ class InventoryService {
       );
     }
 
-    final materials = {
-      product.material1,
-      product.material2,
-      product.material3,
-      product.material4,
-    }.whereType<String>();
+    // Define material names in order
+    final materialNames = ['Iron', 'Copper', 'Steel', 'Plastic'];
 
-    for (final materialName in materials) {
+    // Map material names to the quantity required per product
+    final materialMap = {
+      materialNames[0]: product.material1,
+      materialNames[1]: product.material2,
+      materialNames[2]: product.material3,
+      materialNames[3]: product.material4,
+    };
+
+    // Step 1: Check inventory availability
+    for (final entry in materialMap.entries) {
+      final materialName = entry.key;
+      final requiredQty = entry.value * quantity;
+
       final inv = inventoryBox.values.firstWhereOrNull(
         (inv) => inv.material == materialName,
       );
+
       if (inv == null) {
         return InventoryResult(
           success: false,
@@ -54,7 +62,8 @@ class InventoryService {
           color: Colors.red,
         );
       }
-      if (inv.quantity < quantity) {
+
+      if (inv.quantity < requiredQty) {
         return InventoryResult(
           success: false,
           message: "❌ Not enough stock for $materialName.",
@@ -63,12 +72,17 @@ class InventoryService {
       }
     }
 
-    for (final materialName in materials) {
+    // Step 2: Deduct inventory
+    for (final entry in materialMap.entries) {
+      final materialName = entry.key;
+      final requiredQty = entry.value * quantity;
+
       final index = inventoryBox.values.toList().indexWhere(
         (inv) => inv.material == materialName,
       );
+
       final inv = inventoryBox.getAt(index)!;
-      final newQty = inv.quantity - quantity;
+      final newQty = inv.quantity - requiredQty;
 
       await inventoryBox.putAt(
         index,
@@ -80,17 +94,20 @@ class InventoryService {
       );
     }
 
+    // Step 3: Check for low or out-of-stock materials
     List<String> lowStock = [];
     List<String> outOfStock = [];
 
-    for (final materialName in materials) {
+    for (final entry in materialMap.entries) {
+      final materialName = entry.key;
       final inv = inventoryBox.values.firstWhereOrNull(
         (inv) => inv.material == materialName,
       );
+
       if (inv != null) {
         if (inv.quantity <= 0) {
           outOfStock.add(inv.material);
-        } else if (inv.quantity < inv.threshold) {
+        } else if (inv.quantity < (inv.threshold ?? 0)) {
           lowStock.add(inv.material);
         }
       }
@@ -117,10 +134,9 @@ class InventoryService {
     );
   }
 
-  Future<List<InventoryModel>> getData()async{
+  // Utility function to fetch all inventory
+  Future<List<InventoryModel>> getData() async {
     final box = await Hive.openBox<InventoryModel>('inventory');
     return box.values.toList();
   }
-
-
 }

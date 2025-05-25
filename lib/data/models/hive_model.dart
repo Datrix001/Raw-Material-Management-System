@@ -34,16 +34,15 @@ class HiveModel extends HiveObject{
 class InventoryModel extends HiveObject {
   @HiveField(0)
   late String material;
-
   @HiveField(1)
   late int quantity;
 @HiveField(2)
-  late int threshold;
+  late int? threshold;
 
   InventoryModel({
     required this.material,
     required this.quantity,
-    required this.threshold,
+    this.threshold,
   });
 
 }
