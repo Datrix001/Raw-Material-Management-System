@@ -145,7 +145,6 @@ class Gsheet {
     // await syncToGoogleSheets();
     await updateGoogleSheet();
     await inventoryUpdate();
-    await fetchInventoryFromGoogleSheets();
     // InventoryCubit().refresh();
     cubit.refresh();
     // await deleteSync();
