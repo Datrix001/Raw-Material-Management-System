@@ -85,6 +85,13 @@ class _MaterialLayerState extends State<MaterialLayer> {
                         productName: selectedProduct!,
                         quantity: selectedQuantity,
                       );
+                      Map<String, dynamic> productDetail = {
+                        'material': selectedProduct!,
+                        'quantity': selectedQuantity,
+                      };
+                      await context
+                          .read<InventoryCubit>()
+                          .updateInventoryComposition(productDetail);
 
                       _showSnackBar(result.message, result.color);
 
@@ -118,9 +125,11 @@ class _MaterialLayerState extends State<MaterialLayer> {
                     child: BlocBuilder<InventoryCubit, List<InventoryModel>>(
                       builder: (context, state) {
                         if (state.isEmpty) {
-                          return Center(child: Text('No inventory data found.'));
+                          return Center(
+                            child: Text('No inventory data found.'),
+                          );
                         }
-                    
+
                         return ListView.builder(
                           itemCount: state.length,
                           itemBuilder: (context, index) {

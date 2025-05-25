@@ -12,10 +12,20 @@ class InventoryCubit extends Cubit<List<InventoryModel>> {
     emit(compositions);
   }
 
-  void refresh(){
+  Future<void> updateInventoryComposition(
+    Map<String, dynamic> productDetail,
+  ) async {
+    await HiveData().inventoryUpdate(
+      material: productDetail['material'],
+      quantity: productDetail['quantity'],
+    );
     loadAllData();
   }
-  
+
+
+  void refresh() {
+    loadAllData();
+  }
 
   // Your existing methods...
 }

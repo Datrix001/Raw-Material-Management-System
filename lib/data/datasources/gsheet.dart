@@ -44,7 +44,7 @@ class Gsheet {
     }
   }
 
-  Future<void> UpdateGoogleSheet() async {
+  Future<void> updateGoogleSheet() async {
     final box = Hive.box<HiveModel>('composition');
 
     for (int i = 0; i < box.length; i++) {
@@ -143,7 +143,7 @@ class Gsheet {
     await Hive.openBox<String>('deleted_composition_ids');
 
     // await syncToGoogleSheets();
-    await UpdateGoogleSheet();
+    await updateGoogleSheet();
     await inventoryUpdate();
     await fetchInventoryFromGoogleSheets();
     // InventoryCubit().refresh();
