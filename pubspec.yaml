@@ -17,6 +17,7 @@ dependencies:
   flutter_bloc:
   connectivity_plus: ^6.1.4
   http: ^1.4.0
+  collection:
 
 dev_dependencies:
   flutter_test:
