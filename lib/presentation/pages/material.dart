@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:rmms/data/datasources/gsheet.dart';
+import 'package:rmms/data/models/hive_model.dart';
 import 'package:rmms/domain/logic_method.dart';
+import 'package:rmms/presentation/bloc/inventory_cubit.dart';
 import 'package:rmms/presentation/components/custom_button.dart';
 import 'package:rmms/presentation/components/dropdown.dart';
 import 'package:rmms/presentation/components/product_dropdown.dart';
@@ -96,7 +100,42 @@ class _MaterialLayerState extends State<MaterialLayer> {
                     color: Colors.green,
                   ),
 
-                  const SizedBox(height: 10),
+                  CustomButton(
+                    name: "Sync Inventory from Google Sheets",
+                    color: Colors.blue,
+                    function: () async {
+                      await Gsheet().fetchInventoryFromGoogleSheets();
+                      context.read<InventoryCubit>().refresh();
+
+                      _showSnackBar(
+                        "Inventory synced from Google Sheets",
+                        Colors.green,
+                      );
+                    },
+                  ),
+
+                  Expanded(
+                    child: BlocBuilder<InventoryCubit, List<InventoryModel>>(
+                      builder: (context, state) {
+                        if (state.isEmpty) {
+                          return Center(child: Text('No inventory data found.'));
+                        }
+                    
+                        return ListView.builder(
+                          itemCount: state.length,
+                          itemBuilder: (context, index) {
+                            final item = state[index];
+                            return ListTile(
+                              title: Text(item.material ?? 'Unknown'),
+                              subtitle: Text(
+                                'Quantity: ${item.quantity}, Threshold: ${item.threshold}',
+                              ),
+                            );
+                          },
+                        );
+                      },
+                    ),
+                  ),
                 ],
               ),
             ),

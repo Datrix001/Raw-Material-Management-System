@@ -1,11 +1,14 @@
 import 'dart:async';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:rmms/data/datasources/gsheet.dart';
+import 'package:rmms/presentation/bloc/inventory_cubit.dart';
 
 class SyncService {
   static Timer? _timer;
 
-  static void startSyncing({Duration interval = const Duration(minutes: 2)}) {
+  static void startSyncing({
+    required InventoryCubit cubit,
+    Duration interval = const Duration(minutes: 2)}) {
     _timer?.cancel();
     _timer = Timer.periodic(interval, (timer) async {
       try {
@@ -13,7 +16,7 @@ class SyncService {
         final isConnected = await _checkInternetConnection();
         if (isConnected) {
           print('Synching Starting!!!!');
-          await Gsheet().syncAll();
+          await Gsheet().syncAll(cubit:cubit);
           // await Gsheet().fetchInventoryData();
         } else {
           print('No internet connection!!!!!!!');

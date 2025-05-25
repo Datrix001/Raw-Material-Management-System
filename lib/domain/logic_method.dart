@@ -116,4 +116,11 @@ class InventoryService {
       color: Colors.green,
     );
   }
+
+  Future<List<InventoryModel>> getData()async{
+    final box = await Hive.openBox<InventoryModel>('inventory');
+    return box.values.toList();
+  }
+
+
 }

@@ -7,12 +7,14 @@ import 'package:rmms/data/models/hive_model.dart';
 class HiveData {
   static Box<HiveModel>? _box;
   static Box<String>? _box1;
+  static Box<InventoryModel>? _box2;
+
 
   static Future<void> init() async {
     Hive.registerAdapter(HiveModelAdapter());
     Hive.registerAdapter(InventoryModelAdapter());
     
-    await Hive.openBox<InventoryModel>('inventory');
+    _box2 = await Hive.openBox<InventoryModel>('inventory');
     _box = await Hive.openBox<HiveModel>('composition');
     _box1 = await Hive.openBox<String>('deleted_composition_ids');
 
@@ -52,6 +54,11 @@ class HiveData {
   List<HiveModel> getAllCompositions() {
     if (_box == null) return [];
     return _box!.values.toList();
+  }
+
+  List<InventoryModel> fetchData(){
+    if(_box2==null) return[];
+    return _box2!.values.toList();
   }
 
   // Updating data

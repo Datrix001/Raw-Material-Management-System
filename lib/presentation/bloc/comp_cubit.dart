@@ -47,6 +47,8 @@ class CompCubit extends Cubit<List<HiveModel>> {
       isUpdate: true
     );
     loadCompositions();
-
   }
+
+  
+
 }

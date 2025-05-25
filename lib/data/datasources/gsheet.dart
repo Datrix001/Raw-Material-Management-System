@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:hive/hive.dart';
 import 'package:http/http.dart' as http;
 import 'package:rmms/data/models/hive_model.dart';
+import 'package:rmms/presentation/bloc/inventory_cubit.dart';
 
 class Gsheet {
   static const _scriptUrl =
@@ -82,7 +83,9 @@ class Gsheet {
   Future<void> fetchInventoryFromGoogleSheets() async {
     try {
       final response = await http.get(
-        Uri.parse("$_scriptUrl?type=inventory_sheet"),
+        Uri.parse(
+          "https://script.googleusercontent.com/macros/echo?user_content_key=AehSKLj3XusMsfa80-XxOgsabPNtqBwrlDGESm1xc1FxLnvfqJM5yq03YtoJubpwLjSmRHUnLM6zVeqMJUYb54xwVaxX8tgNB4eXOfUrg1tgW3Y5NKt7s2OlgPsZPyOWKc48w3yTtVfA0Pco8Joa8C1oD6_fZO3GVYKcAs9FjVROe_6uItB9_sZE_Iw7zysRhnajLXMjdd_RWKtM9o04IMsej2Nu88YMQrKJxJop9E8uhMKpMnNGmv-eyTMHs26rsDRwCJHqfEnrLBlkrFZV9HmfQXlFHUsQYGDtkQSUlgsHjbFAUotfBM72Tcjd2awFBg&lib=M9fFx6F6zr4n2CkLKlKt7Z4JaLnrymLVK",
+        ),
       );
 
       if (response.statusCode == 200) {
@@ -112,12 +115,14 @@ class Gsheet {
     }
   }
 
-  Future<void> syncAll() async {
+  Future<void> syncAll({required InventoryCubit cubit}) async {
     await Hive.openBox<String>('deleted_composition_ids');
 
     // await syncToGoogleSheets();
     await UpdateGoogleSheet();
     await fetchInventoryFromGoogleSheets();
+    // InventoryCubit().refresh();
+    cubit.refresh();
     // await deleteSync();
   }
 }
